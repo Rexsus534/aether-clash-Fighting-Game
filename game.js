@@ -188,7 +188,7 @@
     return true;
   }
   function emitRoundCue(cue,round) {
-    const event={cue,round,text:cue==='round'?`Round ${round}`:'Fight!'};roundCues.push(event);if(roundCues.length>12)roundCues.shift();
+    const event={cue,round,text:cue==='round'?`Raunt ${round}`:'Dövüş!'};roundCues.push(event);if(roundCues.length>12)roundCues.shift();
     if(audio)menuSound(cue);if(roundAnnouncer)try{roundAnnouncer(event);}catch(_){}
     systemAnnouncer?.play(cue==='round'?`round_${round}`:'fight',{replace:cue==='round'});
   }
