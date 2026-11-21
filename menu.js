@@ -1,4 +1,4 @@
-/* Front door: player -> rival -> arena/difficulty, with future locked roster slots. */
+/* Front door: player -> rival -> arena/difficulty, with future locked karakter yuvaları. */
 (() => {
   'use strict';
   const root=document.querySelector('#front-menu'),game=window.__game;
@@ -16,8 +16,8 @@
     ...(window.Nib&&window.NIB_MANIFEST?{nib:{name:'NIB',tag:'ÇATI KURYECİSİ',race:'YARI İNSAN',portrait:'assets/nib/ui/portrait.webp',art:'assets/menu/nib-select.webp',detail:'Her mektup teslim edilir. Yumruklar da öyle.',basic:'COP YAĞMURU',ultimate:'ÖZEL TESLİMAT',style:'Hızlı saldırı / çift kurye copu',color:'#8fd4ff'}}:{}),
     ...(window.Edda&&window.EDDA_MANIFEST?{edda:{name:'EDDA',tag:'KABUK BİLGESİ',race:'YARI İNSAN',portrait:'assets/edda/ui/portrait.webp',art:'assets/menu/edda-select.webp',detail:'Kolay öfkelenmez, yere sermek imkânsızdır.',basic:'ASA TEKNİKLERİ',ultimate:'KADİM KAPLUMBAĞA',style:'Karşı savunma / asa ve kabuk koruması',color:'#8fe3b4'}}:{})
   };
-  // Showcase fighters (assets/showcase/showcase.js) fill roster slots with avatar and art; they cannot be confirmed yet.
-  const showcase=Object.fromEntries(Object.entries(window.SHOWCASE_DÖVÜŞÇÜS||{}).filter(([id])=>!fighters[id]));
+  // Showcase fighters (assets/showcase/showcase.js) fill karakter yuvaları with avatar and art; they cannot be confirmed yet.
+  const showcase=Object.fromEntries(Object.entries(window.SHOWCASE_FIGHTERS||{}).filter(([id])=>!fighters[id]));
   const info=id=>fighters[id]||showcase[id],soon=id=>!!showcase[id];
   const opened=[...Object.keys(fighters),...Object.keys(showcase)];
   // Touch screens have no hover: a tap only previews a fighter; the yellow ONAYLA button picks it.
@@ -73,7 +73,7 @@
     if(backgroundVideo){videoPlayToken++;backgroundVideo.pause();backgroundVideo.remove();}
     root.dataset.screen=screen;root.dataset.step=String(step);root.dataset.mode=mode;
     if(screen==='home'){
-      root.innerHTML=`<div class="home-art video-backed"></div><div class="menu-grain"></div><header class="home-top"><span></span><span class="home-top-right"><span class="build-tag">DÖVÜŞ DEMOSU / CİLT 02</span>${canFullscreen?`<button class="menu-fullscreen${fullscreenHint?' hinted':''}" data-cmd="fullscreen" aria-label="Tam ekran" title="Layar penuh"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>`:''}</span></header><div class="home-content"><div class="home-title"><h1>AETHER<br><em>CLASH</em><i>✦</i></h1><p>İki taraf. Tek arena.</p></div><nav class="home-nav" aria-label="Ana menü"><button data-cmd="versus"><span class="nav-index">01</span><span>VS BİLGİSAYAR<small>Rakibini seç. Arenaya hükmet.</small></span><b>↗</b></button><button data-cmd="training"><span class="nav-index">02</span><span>ANTRENMAN<small>Dövüşçünü tanı. Kombonu geliştir.</small></span><b>↗</b></button><button data-cmd="settings"><span class="nav-index">03</span><span>AYARLAR</span><b>↗</b></button><button data-cmd="about"><span class="nav-index">04</span><span>HAKKINDA</span><b>↗</b></button></nav></div><div class="home-caption"><span>MEKA</span><i>VS</i><span>YARI İNSAN</span><small>TEKNOLOJİ İÇGÜDÜYLE BULUŞUYOR</small></div><footer class="home-footer"><span></span><span id="menu-ready">${game.snapshot().ready?'DÖVÜŞE HAZIR':'ARENA HAZIRLANIYOR…'}</span></footer>`;
+      root.innerHTML=`<div class="home-art video-backed"></div><div class="menu-grain"></div><header class="home-top"><span></span><span class="home-top-right"><span class="build-tag">DÖVÜŞ DEMOSU / CİLT 02</span>${canFullscreen?`<button class="menu-fullscreen${fullscreenHint?' hinted':''}" data-cmd="fullscreen" aria-label="Tam ekran" title="Tam ekran"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>`:''}</span></header><div class="home-content"><div class="home-title"><h1>AETHER<br><em>CLASH</em><i>✦</i></h1><p>İki taraf. Tek arena.</p></div><nav class="home-nav" aria-label="Ana menü"><button data-cmd="versus"><span class="nav-index">01</span><span>VS BİLGİSAYAR<small>Rakibini seç. Arenaya hükmet.</small></span><b>↗</b></button><button data-cmd="training"><span class="nav-index">02</span><span>ANTRENMAN<small>Dövüşçünü tanı. Kombonu geliştir.</small></span><b>↗</b></button><button data-cmd="settings"><span class="nav-index">03</span><span>AYARLAR</span><b>↗</b></button><button data-cmd="about"><span class="nav-index">04</span><span>HAKKINDA</span><b>↗</b></button></nav></div><div class="home-caption"><span>MEKA</span><i>VS</i><span>YARI İNSAN</span><small>TEKNOLOJİ İÇGÜDÜYLE BULUŞUYOR</small></div><footer class="home-footer"><span></span><span id="menu-ready">${game.snapshot().ready?'DÖVÜŞE HAZIR':'ARENA HAZIRLANIYOR…'}</span></footer>`;
     } else if(screen==='select'){
       root.innerHTML=`<div class="selection-backdrop"></div>${navHeader(step===0?'DÖVÜŞÇÜNÜ SEÇ':'RAKİBİNİ SEÇ',mode==='versus'?'BİLGİSAYARA KARŞI':'ANTRENMAN ODASI')}<div class="selection-steps"><span class="${step===0?'current':'done'}">01 <b>OYUNCU</b></span><i></i><span class="${step===1?'current':''}">02 <b>RAKİP</b></span><i></i><span>03 <b>ARENA</b></span></div><div class="select-stage"><div id="player-preview">${fighterPanel(step===0?hover:player,'player')}</div><div class="roster-center"><div class="roster-caption"><strong>${step===0?'OYUNCU 1':'BİLGİSAYAR'}</strong><span>BİR DÖVÜŞÇÜ SEÇ</span></div><div class="roster-grid" role="group" aria-label="Karakter kadrosu">${roster.map((id,i)=>{const f=info(id);return `<button class="roster-tile ${id===hover?'highlight':''} ${!f?'locked':''} ${soon(id)?'soon':''}" data-fighter="${id}" aria-label="${f?f.name+' — '+f.race+(soon(id)?', henüz oynanamıyor':''):'Yuva '+(i+1)+' kilitli'}" aria-disabled="${!fighters[id]}"><img class="${f?'portrait-image':''}" data-portrait-side="${step===1?'enemy':'player'}" src="${f?.portrait||'assets/menu/locked.svg'}" alt=""><span>${f?.name||'KİLİTLİ'}</span><b>${step===1&&id===player?'P1':''}</b></button>`;}).join('')}</div><div id="fighter-moves" class="fighter-moves"></div><button class="menu-primary confirm-fighter" data-cmd="confirm">${step===0?'ONAYLA DÖVÜŞÇÜ':'ONAYLA RAKİP'} <b>→</b></button><p id="roster-notice" class="roster-notice" aria-live="polite">${roster.length>opened.length?(roster.length-opened.length)+' karakter yuvası ayrıldı.':''}</p></div><div id="enemy-preview">${fighterPanel(step===1?hover:null,'enemy')}</div></div>${footer()}`;
       updatePreview(false);
@@ -93,7 +93,7 @@
     const confirm=root.querySelector('.confirm-fighter');if(confirm)confirm.setAttribute('aria-disabled',String(!fighters[hover]));if(play)sfx('move');
   }
   function focusFighter(id){if(hover===id||lockIn)return;hover=id;updatePreview();}
-  function confirm(){if(lockIn)return;if(!fighters[hover]){sfx('locked',true);root.querySelector('#roster-notice').textContent=soon(hover)?showcase[hover].name+' henüz oynanamıyor.':'Karakter ini belum terbuka.';return;}
+  function confirm(){if(lockIn)return;if(!fighters[hover]){sfx('locked',true);root.querySelector('#roster-notice').textContent=soon(hover)?showcase[hover].name+' henüz oynanamıyor.':'Bu karakter henüz açılmadı.';return;}
     // The pick flashes 3 times (tile and big art) with a lock-in chime before the next step, so the screen does not jump.
     sfx('pick',true);game.announceSelection(hover);root.dataset.picking='true';
     root.querySelector(`[data-fighter="${hover}"]`)?.classList.add('picked');root.querySelector(step===0?'#player-preview':'#enemy-preview')?.classList.add('picked');
@@ -101,7 +101,7 @@
     lockIn=setTimeout(()=>{lockIn=null;delete root.dataset.picking;if(step===0){player=hover;step=1;hover=player==='arco'?'fenr':'arco';}else{enemy=hover;screen='arena';step=2;}render();},3*PICK_FLASH*1000);
   }
   function back(){if(lockIn)return;game.stopAnnouncer();sfx('back',true);if(screen==='arena'){screen='select';step=1;hover=enemy;}else if(screen==='select'&&step===1){step=0;hover=player;}else screen='home';render();}
-  function start(){if(game.startMatch({player,enemy,stage,level,mode})){document.querySelector('#arena').focus();}else {const error=root.querySelector('#setup-error');if(error)error.textContent='Aset belum siap. Tunggu sebentar lalu coba lagi.';sfx('locked',true);}}
+  function start(){if(game.startMatch({player,enemy,stage,level,mode})){document.querySelector('#arena').focus();}else {const error=root.querySelector('#setup-error');if(error)error.textContent='Varlıklar henüz hazır değil. Biraz bekleyip tekrar dene.';sfx('locked',true);}}
   function command(cmd){
     if(lockIn)return;
     if(cmd==='fullscreen'){sfx('move',true);dismissFullscreenHint();game.toggleFullscreen?.();return;}
