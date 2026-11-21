@@ -15,7 +15,7 @@
     dummyMax:200, heroMax:200, hpPerBar:100, basicCooldownRefund:.05
   };
   const cooldownMax = { skill1:BALANCE.skill1.cooldown, skill2:BALANCE.skill2.cooldown, ultimate:BALANCE.ultimate.cooldown };
-  const skillNames = { skill1: 'AETHER BOLT', skill2: 'SEISMIC DRIVE', ultimate: 'HELIOS SQUADRON' };
+  const skillNames = { skill1: 'AETHER MERMİSİ', skill2: 'SİSMİK DARBE', ultimate: 'HELIOS FİLOSU' };
   const images = {}, F = window.Fenr, M = window.Mira && window.MIRA_MANIFEST ? window.Mira : null, C = window.Cora && window.CORA_MANIFEST ? window.Cora : null, N = window.Naja && window.NAJA_MANIFEST ? window.Naja : null, HD = window.Haldor && window.HALDOR_MANIFEST ? window.Haldor : null, Z = window.Zanni && window.ZANNI_MANIFEST ? window.Zanni : null, IS = window.Isolde && window.ISOLDE_MANIFEST ? window.Isolde : null, RH = window.Rhea && window.RHEA_MANIFEST ? window.Rhea : null, SO = window.Solan && window.SOLAN_MANIFEST ? window.Solan : null, NB = window.Nib && window.NIB_MANIFEST ? window.Nib : null, ED = window.Edda && window.EDDA_MANIFEST ? window.Edda : null;
   // Kits that share one start/move/refund contract (mira.js, cora.js, naja.js, haldor.js, zanni.js, isolde.js, rhea.js, solan.js, nib.js, edda.js).
   const KITS = { ...(M ? { mira: M } : {}), ...(C ? { cora: C } : {}), ...(N ? { naja: N } : {}), ...(HD ? { haldor: HD } : {}), ...(Z ? { zanni: Z } : {}), ...(IS ? { isolde: IS } : {}), ...(RH ? { rhea: RH } : {}), ...(SO ? { solan: SO } : {}), ...(NB ? { nib: NB } : {}), ...(ED ? { edda: ED } : {}) };
@@ -184,7 +184,7 @@
     selectedCharacter=player;opponentCharacter=enemy;stageId=stage;difficulty=level;images.stage=images['stage-'+stage];CONFIG.groundY=Rules.stages[stage].groundY;
     aiEnabled=mode==='versus';match=Rules.create(mode);roundCues.length=0;setMenuOpen(false);resetCombat();warmCutins();
     $('#ai-toggle').checked=aiEnabled;$('#character-select').value=selectedCharacter;document.body.classList.toggle('in-versus',mode==='versus');
-    if(mode==='versus'){announceTimer=0;emitRoundCue('round',1);}else announce('TRAINING READY',1.3);
+    if(mode==='versus'){announceTimer=0;emitRoundCue('round',1);}else announce('ANTRENMAN HAZIR',1.3);
     return true;
   }
   function emitRoundCue(cue,round) {
@@ -199,7 +199,7 @@
       if(event.type==='round-end') {
         clearInput();stopUltimateVoice();squad=enemySquad=parade=enemyParade=flock=enemyFlock=serpent=enemySerpent=quake=enemyQuake=finale=enemyFinale=skyfall=enemySkyfall=orrery=enemyOrrery=sunroar=enemySunroar=delivery=enemyDelivery=tortoise=enemyTortoise=null;fenrCutin=null;hero.action=dummy.action=null;projectiles.length=effects.length=0;hitstop=cinematic=trauma=0;
         if(hero.hp<=0)state('down');else state('idle');if(currentDummyHP()>0){dummy.state='idle';dummy.stateTime=0;}
-        match.endText=event.doubleKO?'DOUBLE K.O.':event.timeout?'TIME UP':'K.O.';announceTimer=0;sound('heavy');
+        match.endText=event.doubleKO?'DOUBLE K.O.':event.timeout?'TIME UP': 'NAKAVT';announceTimer=0;sound('heavy');
         const call=event.doubleKO?'double_ko':event.timeout?'time_up':'ko';
         const outcome=event.winner==='draw'?'draw':`${event.winner==='player'?selectedCharacter:opponentCharacter}_wins`;
         const speech=window.ANNOUNCER_MANIFEST?.clips;
@@ -213,14 +213,14 @@
   function updateMatchHud() {
     if(!Rules)return;
     const versus=match?.mode==='versus',s=Rules.stages[stageId];
-    $('#mode-label').textContent=versus?`ROUND ${match.round} / 3`:'FREE TRAINING';$('#match-clock').textContent=versus?String(Math.ceil(match.seconds)).padStart(2,'0'):'∞';
+    $('#mode-label').textContent=versus?`ROUND ${match.round} / 3`: 'SERBEST ANTRENMAN';$('#match-clock').textContent=versus?String(Math.ceil(match.seconds)).padStart(2,'0'):'∞';
     $('.match-center').setAttribute('aria-label',versus?'Pertandingan, menang dua ronde dari maksimal tiga':'Mode latihan tanpa batas waktu');
     $('#match-score').textContent=versus?`${match.playerWins} — ${match.enemyWins}`:'VS';$('#stage-name').textContent=s.short;$('#stage-subtitle').textContent=s.subtitle;
     $('#round-wins-player').textContent=versus?'◆'.repeat(match.playerWins)+'◇'.repeat(2-match.playerWins):'';$('#round-wins-enemy').textContent=versus?'◆'.repeat(match.enemyWins)+'◇'.repeat(2-match.enemyWins):'';
     const card=$('#round-call'),show=!menuOpen&&versus&&['intro','ko'].includes(match.phase);
     card.hidden=!show;card.dataset.phase=match?.phase||'fight';
-    $('#round-call-title').textContent=!show?'':match.phase==='intro'?(match.fightCue?'FIGHT':`ROUND ${match.round}`):match.endText||'K.O.';
-    $('#round-call-detail').textContent=match?.phase==='ko'?(match.lastWinner==='draw'?'DRAW · ROUND REPLAY':(match.lastWinner==='player'?selectedCharacter:opponentCharacter).toUpperCase()+' WINS THE ROUND'):'FIRST TO TWO WINS';
+    $('#round-call-title').textContent=!show?'':match.phase==='intro'?(match.fightCue? 'DÖVÜŞ!':`ROUND ${match.round}`):match.endText|| 'NAKAVT';
+    $('#round-call-detail').textContent=match?.phase==='ko'?(match.lastWinner==='draw'? 'BERABERE · RAUNT TEKRARI':(match.lastWinner==='player'?selectedCharacter:opponentCharacter).toUpperCase()+ ' RAUNTU KAZANDI'): 'İKİ RAUNT KAZANAN';
     canvas.dataset.mode=match?.mode||'training';canvas.dataset.matchPhase=match?.phase||'fight';canvas.dataset.round=String(match?.round||1);canvas.dataset.opponent=opponentCharacter;canvas.dataset.difficulty=difficulty;canvas.dataset.stage=stageId;
   }
 
@@ -309,7 +309,7 @@
     Object.assign(dummy, { x: 915, y: CONFIG.groundY, vx: 0, vy: 0, state: 'idle', stateTime: 0, damage: 0, ko:false, flash: 0, invuln: 0, angle: 0 });
     if(F) {F.reset(hero);F.reset(dummy);Object.assign(dummy,{facing:-1,action:null,cooldowns:{skill1:0,skill2:0,ultimate:0},aiThink:.4,aiTime:0,aiChain:0,walkPhase:0,jumps:0});cpu={seen:new WeakMap(),decided:new WeakSet(),read:null,heroActionAt:0,heroAction:null,airborne:false,airAt:0,antiAirRead:false,plan:null,doubleAt:0};syncPlayerForm();}
     fenrCutin=null;hudIdentity='';
-    particles.length = effects.length = projectiles.length = damageNumbers.length = 0; totalDamage = comboHits = bestCombo = comboDamage = comboTimer = hitstop = trauma = cinematic = 0; clearInput(); setPaused(false); announce('TRAINING READY', 1.25);
+    particles.length = effects.length = projectiles.length = damageNumbers.length = 0; totalDamage = comboHits = bestCombo = comboDamage = comboTimer = hitstop = trauma = cinematic = 0; clearInput(); setPaused(false); announce('ANTRENMAN HAZIR', 1.25);
     squad = null; enemySquad = null; parade = null; enemyParade = null; flock = null; enemyFlock = null; serpent = null; enemySerpent = null; quake = null; enemyQuake = null; finale = null; enemyFinale = null; skyfall = null; enemySkyfall = null; orrery = null; enemyOrrery = null; sunroar = null; enemySunroar = null; delivery = null; enemyDelivery = null; tortoise = null; enemyTortoise = null;
     for(const name of Object.keys(rechargePulse)) rechargePulse[name]=0;
   }
@@ -335,7 +335,7 @@
     damageNumbers.push({ x: dummy.x + (random() - .5) * 20, y: impactY - 20, amount: damage, life: .9, maxLife: .9, color });
     spawnParticles(dummy.x - dir * 21, impactY, color, damage >= 30 ? 22 : 14, damage >= 30 ? 320 : 220);
     effects.push({ type: 'impact', x: dummy.x - dir * 15, y: impactY, life: .2, maxLife: .2, color, heavy: damage >= 30 });
-    if (dummy.damage >= BALANCE.dummyMax || knockdown) { dummy.ko=dummy.damage>=BALANCE.dummyMax; dummy.state = 'down'; dummy.vy = -330; dummy.vx = dir * 290; dummy.fallDirection = dir; announce(dummy.ko?'K.O.':'KNOCKDOWN', .9); }
+    if (dummy.damage >= BALANCE.dummyMax || knockdown) { dummy.ko=dummy.damage>=BALANCE.dummyMax; dummy.state = 'down'; dummy.vy = -330; dummy.vx = dir * 290; dummy.fallDirection = dir; announce(dummy.ko? 'NAKAVT': 'YERE DÜŞTÜ', .9); }
     sound(damage >= 30 ? 'heavy' : 'hit'); return true;
   }
   function attackRange(index) {
@@ -1588,33 +1588,46 @@
     drawSquadron(); drawSquadron(enemySquad); drawParade(parade); drawParade(enemyParade); drawMurmuration(flock); drawMurmuration(enemyFlock); drawSerpent(serpent); drawSerpent(enemySerpent); drawEffects(); drawHitboxes(); ctx.restore(); updateHud();
   }
   function fighterInfo(id,form) {
-    if(id==='fenr'){const wolf=form==='wolf';return {name:'FENR',cls:wolf?'WEREWOLF':'DEMI-HUMAN',deck:wolf?'FENR · FERAL':'FENR',title:'WOLF RANGER',portrait:'assets/fenr/ui/portrait-'+(wolf?'wolf':'human')+'.webp',names:F.kits[wolf?'wolf':'human'].names,icons:['basic','skill1','skill2','ultimate'].map((s,i)=>'assets/fenr/ui/icon-'+(i===3?'ultimate':(wolf?'wolf':'human')+'-'+s)+'.webp')};}
-    if(id==='cora')return {name:'CORA',cls:'DEMI-HUMAN',deck:'CORA',title:'SKY DANCER',portrait:'assets/cora/ui/portrait.webp',names:C.names,icons:['basic','skill1','skill2','ultimate'].map(s=>'assets/cora/ui/icon-'+s+'.webp')};
-    if(id==='edda')return {name:'EDDA',cls:'DEMI-HUMAN',deck:'EDDA',title:'SHELL SAGE',portrait:'assets/edda/ui/portrait.webp',names:ED.names,icons:['basic','skill1','skill2','ultimate'].map(s=>'assets/edda/ui/icon-'+s+'.webp')};
-    if(id==='nib')return {name:'NIB',cls:'DEMI-HUMAN',deck:'NIB',title:'ROOFTOP POST',portrait:'assets/nib/ui/portrait.webp',names:NB.names,icons:['basic','skill1','skill2','ultimate'].map(s=>'assets/nib/ui/icon-'+s+'.webp')};
-    if(id==='solan')return {name:'SOLAN',cls:'DEMI-HUMAN',deck:'SOLAN',title:'SUNMANE',portrait:'assets/solan/ui/portrait.webp',names:SO.names,icons:['basic','skill1','skill2','ultimate'].map(s=>'assets/solan/ui/icon-'+s+'.webp')};
-    if(id==='rhea')return {name:'RHEA',cls:'MECHA',deck:'RHEA',title:'LITTLE ORRERY',portrait:'assets/rhea/ui/portrait.webp',names:RH.names,icons:['basic','skill1','skill2','ultimate'].map(s=>'assets/rhea/ui/icon-'+s+'.webp')};
-    if(id==='isolde')return {name:'ISOLDE',cls:'MECHA',deck:'ISOLDE',title:'WHITE STRIDER',portrait:'assets/isolde/ui/portrait.webp',names:IS.names,icons:['basic','skill1','skill2','ultimate'].map(s=>'assets/isolde/ui/icon-'+s+'.webp')};
-    if(id==='zanni')return {name:'ZANNI',cls:'MECHA',deck:'ZANNI',title:'CLOCKWORK JESTER',portrait:'assets/zanni/ui/portrait.webp',names:Z.names,icons:['basic','skill1','skill2','ultimate'].map(s=>'assets/zanni/ui/icon-'+s+'.webp')};
-    if(id==='haldor')return {name:'HALDOR',cls:'MECHA',deck:'HALDOR',title:'WALKING FORGE',portrait:'assets/haldor/ui/portrait.webp',names:HD.names,icons:['basic','skill1','skill2','ultimate'].map(s=>'assets/haldor/ui/icon-'+s+'.webp')};
-    if(id==='naja')return {name:'NAJA',cls:'DEMI-HUMAN',deck:'NAJA',title:'DUNE COBRA',portrait:'assets/naja/ui/portrait.webp',names:N.names,icons:['basic','skill1','skill2','ultimate'].map(s=>'assets/naja/ui/icon-'+s+'.webp')};
-    if(id==='mira')return {name:'MIRA',cls:'MECHA',deck:'MIRA',title:'CANDY PILOT',portrait:'assets/mira/ui/portrait.webp',names:M.names,icons:['basic','skill1','skill2','ultimate'].map(s=>'assets/mira/ui/icon-'+s+'.webp')};
-    return {name:'ARCO',cls:'MECHA',deck:'ARCO',title:'AETHER ARM',portrait:'assets/ui/arco-avatar.webp',names:['IRON CHAIN','AETHER BOLT','SEISMIC DRIVE','HELIOS SQUADRON'],icons:['attack','skill1','skill2','squadron-icon'].map(s=>'assets/ui/'+s+'.webp')};
+    if(id==='fenr'){const wolf=form==='wolf';return {name:'FENR',cls:wolf? 'KURT ADAM': 'YARI İNSAN',deck:wolf?'FENR · FERAL':'FENR',title: 'KURT AVCISI',portrait:'assets/fenr/ui/portrait-'+(wolf?'wolf':'human')+'.webp',names:F.kits[wolf?'wolf':'human'].names,icons:['basic','skill1','skill2','ultimate'].map((s,i)=>'assets/fenr/ui/icon-'+(i===3?'ultimate':(wolf?'wolf':'human')+'-'+s)+'.webp')};}
+    if(id==='cora')return {name:'CORA',cls: 'YARI İNSAN',deck:'CORA',title: 'GÖK DANSÇISI',portrait:'assets/cora/ui/portrait.webp',names:C.names,icons:['basic','skill1','skill2','ultimate'].map(s=>'assets/cora/ui/icon-'+s+'.webp')};
+    if(id==='edda')return {name:'EDDA',cls: 'YARI İNSAN',deck:'EDDA',title: 'KABUK BİLGESİ',portrait:'assets/edda/ui/portrait.webp',names:ED.names,icons:['basic','skill1','skill2','ultimate'].map(s=>'assets/edda/ui/icon-'+s+'.webp')};
+    if(id==='nib')return {name:'NIB',cls: 'YARI İNSAN',deck:'NIB',title: 'ÇATI KURYECİSİ',portrait:'assets/nib/ui/portrait.webp',names:NB.names,icons:['basic','skill1','skill2','ultimate'].map(s=>'assets/nib/ui/icon-'+s+'.webp')};
+    if(id==='solan')return {name:'SOLAN',cls: 'YARI İNSAN',deck:'SOLAN',title: 'GÜNEŞ YELLESİ',portrait:'assets/solan/ui/portrait.webp',names:SO.names,icons:['basic','skill1','skill2','ultimate'].map(s=>'assets/solan/ui/icon-'+s+'.webp')};
+    if(id==='rhea')return {name:'RHEA',cls: 'MEKA',deck:'RHEA',title: 'KÜÇÜK GEZEGEN DÜZENİ',portrait:'assets/rhea/ui/portrait.webp',names:RH.names,icons:['basic','skill1','skill2','ultimate'].map(s=>'assets/rhea/ui/icon-'+s+'.webp')};
+    if(id==='isolde')return {name:'ISOLDE',cls: 'MEKA',deck:'ISOLDE',title: 'BEYAZ MIZRAKÇI',portrait:'assets/isolde/ui/portrait.webp',names:IS.names,icons:['basic','skill1','skill2','ultimate'].map(s=>'assets/isolde/ui/icon-'+s+'.webp')};
+    if(id==='zanni')return {name:'ZANNI',cls: 'MEKA',deck:'ZANNI',title: 'SAAT DÜZENİ SOYTARISI',portrait:'assets/zanni/ui/portrait.webp',names:Z.names,icons:['basic','skill1','skill2','ultimate'].map(s=>'assets/zanni/ui/icon-'+s+'.webp')};
+    if(id==='haldor')return {name:'HALDOR',cls: 'MEKA',deck:'HALDOR',title: 'YÜRÜYEN DEMİRHANE',portrait:'assets/haldor/ui/portrait.webp',names:HD.names,icons:['basic','skill1','skill2','ultimate'].map(s=>'assets/haldor/ui/icon-'+s+'.webp')};
+    if(id==='naja')return {name:'NAJA',cls: 'YARI İNSAN',deck:'NAJA',title: 'KUM KOBRASI',portrait:'assets/naja/ui/portrait.webp',names:N.names,icons:['basic','skill1','skill2','ultimate'].map(s=>'assets/naja/ui/icon-'+s+'.webp')};
+    if(id==='mira')return {name:'MIRA',cls: 'MEKA',deck:'MIRA',title: 'ŞEKER PİLOT',portrait:'assets/mira/ui/portrait.webp',names:M.names,icons:['basic','skill1','skill2','ultimate'].map(s=>'assets/mira/ui/icon-'+s+'.webp')};
+    return {name:'ARCO',cls: 'MEKA',deck:'ARCO',title: 'AETHER KOLU',portrait:'assets/ui/arco-avatar.webp',names:['IRON CHAIN','AETHER BOLT','SEISMIC DRIVE','HELIOS SQUADRON'],icons:['attack','skill1','skill2','squadron-icon'].map(s=>'assets/ui/'+s+'.webp')};
   }
+  const UI_TR = {
+    'IRON CHAIN':'DEMİR KOMBO','AETHER BOLT':'AETHER MERMİSİ','SEISMIC DRIVE':'SİSMİK DARBE','HELIOS SQUADRON':'HELIOS FİLOSU',
+    'RANGER CHAIN':'AVCI KOMBO','FERAL AWAKENING':'VAHŞİ UYANIŞ','MITTEN CHAIN':'ELDİVEN KOMBO','ROCKET PARADE':'ROKET GEÇİDİ',
+    'FEATHER WALTZ':'TÜY VALSİ','NIGHT MURMURATION':'GECE KUZGUN SÜRÜSÜ','VIPER LASH':'ENGEREK KIRBACI','DUNE SERPENT':'KUM YILANI',
+    'FORGE CHAIN':'DEMİRHANE KOMBO','FORGE QUAKE':'DEMİRHANE SARSINTISI','SCISSOR JAB':'MAKAS YUMRUĞU','GRAND FINALE':'BÜYÜK FİNAL',
+    'LANCE LINE':'MIZRAK HATTI','SKYFALL LANCES':'GÖKTEN DÜŞEN MIZRAKLAR','ORBIT STRIKE':'YÖRÜNGE SALDIRISI','GRAND ORRERY':'BÜYÜK GEZEGEN DÜZENİ',
+    'SUNBLADE':'GÜNEŞ KILICI','SUNMANE ROAR':'GÜNEŞ YELLESİ KÜKREYİŞİ','BATON FLURRY':'COP YAĞMURU','SPECIAL DELIVERY':'ÖZEL TESLİMAT',
+    'STAFF FORMS':'ASA TEKNİKLERİ','ELDER TORTOISE':'KADİM KAPLUMBAĞA','WEREWOLF':'KURT ADAM','DEMI-HUMAN':'YARI İNSAN','MECHA':'MEKA',
+    'AETHER ARM':'AETHER KOLU','WOLF RANGER':'KURT AVCISI','SKY DANCER':'GÖK DANSÇISI','SHELL SAGE':'KABUK BİLGESİ',
+    'ROOFTOP POST':'ÇATI KURYECİSİ','SUNMANE':'GÜNEŞ YELLESİ','LITTLE ORRERY':'KÜÇÜK GEZEGEN DÜZENİ','WHITE STRIDER':'BEYAZ MIZRAKÇI',
+    'CLOCKWORK JESTER':'SAAT DÜZENİ SOYTARISI','WALKING FORGE':'YÜRÜYEN DEMİRHANE','DUNE COBRA':'KUM KOBRASI','CANDY PILOT':'ŞEKER PİLOT'
+  };
+  const trUI = value => UI_TR[value] || value;
   function updateFighterIdentity() {
     if(!F)return;
     const identity=selectedCharacter+':'+hero.form+':'+opponentCharacter+':'+dummy.form;
     if(identity!==hudIdentity) {
       hudIdentity=identity;const me=fighterInfo(selectedCharacter,hero.form),rival=fighterInfo(opponentCharacter,dummy.form);
-      $('#player-name').textContent=me.name;$('#player-class').textContent=me.cls;$('#deck-character').textContent=me.deck;
-      $('#player-title').textContent=me.title;
+      $('#player-name').textContent=me.name;$('#player-class').textContent=trUI(me.cls);$('#deck-character').textContent=me.deck;
+      $('#player-title').textContent=trUI(me.title);
       $('#player-portrait').src=me.portrait;$('#player-portrait').alt='Portrait '+me.name;
-      $('#enemy-portrait').src=rival.portrait;$('#enemy-portrait').alt='Portrait '+opponentCharacter.toUpperCase();$('#enemy-class').textContent=rival.cls;
-      $('#enemy-name').textContent=opponentCharacter.toUpperCase();$('#enemy-title').textContent=rival.title;
+      $('#enemy-portrait').src=rival.portrait;$('#enemy-portrait').alt='Portrait '+opponentCharacter.toUpperCase();$('#enemy-class').textContent=trUI(rival.cls);
+      $('#enemy-name').textContent=opponentCharacter.toUpperCase();$('#enemy-title').textContent=trUI(rival.title);
       $('.fighter-two').setAttribute('aria-label','Status lawan '+opponentCharacter.toUpperCase());
-      document.querySelectorAll('.skill-card').forEach((card,i)=>{card.querySelector('.skill-name').textContent=me.names[i];card.querySelector('img').src=me.icons[i];card.setAttribute('aria-label',me.names[i]+', '+['Spasi','I','O','P'][i]);});
+      document.querySelectorAll('.skill-card').forEach((card,i)=>{card.querySelector('.skill-name').textContent=trUI(me.names[i]);card.querySelector('img').src=me.icons[i];card.setAttribute('aria-label',trUI(me.names[i])+', '+['Boşluk','I','O','P'][i]);});
     }
-    $('#player-status').textContent=selectedCharacter==='fenr'?(hero.form==='wolf'?'FERAL ACTIVE':'RANGER READY'):selectedCharacter==='mira'?'PILOT READY':selectedCharacter==='cora'?'WINGS READY':selectedCharacter==='naja'?'SANDS READY':selectedCharacter==='haldor'?'FURNACE HOT':selectedCharacter==='zanni'?'SHOWTIME':selectedCharacter==='isolde'?'LANCE READY':selectedCharacter==='rhea'?'ORBITS SET':selectedCharacter==='solan'?'PRIDE READY':selectedCharacter==='nib'?'ON THE ROUTE':selectedCharacter==='edda'?'STEADY AS STONE':'CORE ACTIVE';
+    $('#player-status').textContent=selectedCharacter==='fenr'?(hero.form==='wolf'? 'VAHŞİ FORM AKTİF': 'AVCI HAZIR'):selectedCharacter==='mira'? 'PİLOT HAZIR':selectedCharacter==='cora'? 'KANATLAR HAZIR':selectedCharacter==='naja'? 'KUM GÜCÜ HAZIR':selectedCharacter==='haldor'? 'OCAK ALEV ALEV':selectedCharacter==='zanni'? 'GÖSTERİ BAŞLASIN':selectedCharacter==='isolde'? 'MIZRAK HAZIR':selectedCharacter==='rhea'? 'YÖRÜNGELER HAZIR':selectedCharacter==='solan'? 'GURUR HAZIR':selectedCharacter==='nib'? 'YOLDA':selectedCharacter==='edda'? 'TAŞ GİBİ SAĞLAM': 'ÇEKİRDEK AKTİF';
     for(const [actor,id] of [[hero,'player-form-timer'],[dummy,'enemy-form-timer']]){const el=$('#'+id),active=actor.form==='wolf';el.hidden=!active;el.textContent=active?'FERAL  '+Math.max(0,actor.formTime).toFixed(1)+' s':'';el.style.setProperty?.('--remaining',String(actor.formTime/F.balance.duration));}
   }
   function updateHud() {
@@ -1649,7 +1662,7 @@
     const h=hpLayers(hero.hp), dh=hpLayers(currentDummyHP());
     $('#health-fill').style.width = `${h.front}%`; $('#health-reserve').style.width = `${h.reserve}%`; $('#health-label').textContent = `${hero.hp} / ${BALANCE.heroMax}`;
     $('#guard-fill').style.width = `${dh.front}%`; $('#guard-reserve').style.width = `${dh.reserve}%`; $('#guard-label').textContent = `HP ${currentDummyHP()} / ${BALANCE.dummyMax}`;
-    $('#dummy-state').textContent = dummy.ko?'K.O.':({ idle: aiEnabled?'WATCHING':'PRACTICE', hurt: 'HIT CONFIRMED', down: 'DOWN', recover: 'RECOVERING' })[dummy.state] || (dummy.action?'ATTACKING':'APPROACHING');
+    $('#dummy-state').textContent = dummy.ko? 'NAKAVT':({ idle: aiEnabled? 'İZLİYOR': 'ANTRENMAN', hurt:  'VURUŞ ONAYLANDI', down:  'YERDE', recover:  'TOPARLANIYOR' })[dummy.state] || (dummy.action? 'SALDIRIYOR': 'YAKLAŞIYOR');
     $('#combo').classList.toggle('visible', comboHits > 0); $('#combo-count').textContent = comboHits; $('#combo-damage').textContent = `${comboDamage} DAMAGE`; $('#total-damage').innerHTML = `${totalDamage} <small>DMG</small>`;
     $('#best-combo').innerHTML = `${bestCombo} <small>HITS</small>`;
     $('#announcement').classList.toggle('visible', announceTimer > 0);
@@ -1715,7 +1728,7 @@
     stopAnnouncer(){systemAnnouncer?.clear();},announcerState(){return systemAnnouncer?.snapshot()||null;},
     selectCharacter, setAI(value){aiEnabled=!!value;dummy.action=null;dummy.vx=0;dummy.state='idle';}, opponentPose,
     setPaused, setHitboxes(v) { hitboxes = !!v; $('#hitbox-toggle').checked = hitboxes; },
-    receiveHit(damage = 12,options={}) { if (menuOpen || (match&&match.phase!=='fight') || hero.hp<=0 || hero.invuln > 0) return false; if (hero.action?.guard && shellGuard(hero)) return false; if (hero.action?.type?.startsWith('skill') || hero.action?.type === 'ultimate') return false; hero.hp = Math.max(0, hero.hp - damage); hero.action = null; hero.rollBuffer = null; hero.doublePose = 0; hero.hurtTime = hero.hp>0?.42:0; hero.vx = hero.facing * -170; state(hero.hp>0?'hurt':'down'); spawnParticles(hero.x, hero.y - 75, '#ffc694', 14, 200); if(options.freeze!==false)hitstop = .05; trauma = Math.min(1, trauma + .2 * (options.shake ?? 1)); if (!hero.hp) {hero.koTime=1.7;clearInput();if(match?.mode!=='versus')announce('CORE RESTART',1.7);} return true; }
+    receiveHit(damage = 12,options={}) { if (menuOpen || (match&&match.phase!=='fight') || hero.hp<=0 || hero.invuln > 0) return false; if (hero.action?.guard && shellGuard(hero)) return false; if (hero.action?.type?.startsWith('skill') || hero.action?.type === 'ultimate') return false; hero.hp = Math.max(0, hero.hp - damage); hero.action = null; hero.rollBuffer = null; hero.doublePose = 0; hero.hurtTime = hero.hp>0?.42:0; hero.vx = hero.facing * -170; state(hero.hp>0?'hurt':'down'); spawnParticles(hero.x, hero.y - 75, '#ffc694', 14, 200); if(options.freeze!==false)hitstop = .05; trauma = Math.min(1, trauma + .2 * (options.shake ?? 1)); if (!hero.hp) {hero.koTime=1.7;clearInput();if(match?.mode!=='versus')announce( 'ÇEKİRDEK YENİDEN BAŞLATILIYOR',1.7);} return true; }
   };
   if(F)reset();
   if(window.FRONTEND_ENABLED)setMenuOpen(true);
@@ -1724,7 +1737,7 @@
   Promise.resolve(window.AETHER_PRELOAD).then(() => Promise.all([loadImage('hero', 'assets/mecha/run/sprite-sheet-alpha.webp', true), loadImage('stage', 'assets/stage.webp', true), ...(Rules?Object.entries(Rules.stages).filter(([id])=>id!=='bellora').map(([id,s])=>loadImage('stage-'+id,s.image,true)):[]), ...(F?[loadImage('fenrHuman','assets/fenr/human/run/sprite-sheet-alpha.webp',true),loadImage('fenrWolf','assets/fenr/wolf/run/sprite-sheet-alpha.webp',true),...['claw','gale','rush','bite','howl','transform'].map(name=>loadImage('fx-'+name,'assets/fenr/ui/fx-'+name+'.webp',true))]:[]), ...(M?[loadImage('mira','assets/mira/run/sprite-sheet-alpha.webp',true),...['star','rocket','burst','crash'].map(name=>loadImage('fx-mira-'+name,'assets/mira/ui/fx-'+name+'.webp',true))]:[]), ...(C?[loadImage('cora','assets/cora/run/sprite-sheet-alpha.webp',true),...['feather','gust','raven'].map(name=>loadImage('fx-cora-'+name,'assets/cora/ui/fx-'+name+'.webp',true))]:[]), ...(N?[loadImage('naja','assets/naja/run/sprite-sheet-alpha.webp',true),...['sandwave','cyclone','serpent','ripple'].map(name=>loadImage('fx-naja-'+name,'assets/naja/ui/fx-'+name+'.webp',true))]:[]), ...(HD?[loadImage('haldor','assets/haldor/run/sprite-sheet-alpha.webp',true),...['slag','splash','steam','quake'].map(name=>loadImage('fx-haldor-'+name,'assets/haldor/ui/fx-'+name+'.webp',true))]:[]), ...(Z?[loadImage('zanni','assets/zanni/run/sprite-sheet-alpha.webp',true),...['ring','bigring','snatch','confetti'].map(name=>loadImage('fx-zanni-'+name,'assets/zanni/ui/fx-'+name+'.webp',true))]:[]), ...(IS?[loadImage('isolde','assets/isolde/run/sprite-sheet-alpha.webp',true),...['piercer','skyfall','shatter','frost'].map(name=>loadImage('fx-isolde-'+name,'assets/isolde/ui/fx-'+name+'.webp',true))]:[]), ...(RH?[loadImage('rhea','assets/rhea/run/sprite-sheet-alpha.webp',true),...['drift','planet','well','burst'].map(name=>loadImage('fx-rhea-'+name,'assets/rhea/ui/fx-'+name+'.webp',true))]:[]), ...(SO?[loadImage('solan','assets/solan/run/sprite-sheet-alpha.webp',true),...['crescent','roar','impact','sunburst'].map(name=>loadImage('fx-solan-'+name,'assets/solan/ui/fx-'+name+'.webp',true))]:[]), ...(NB?[loadImage('nib','assets/nib/run/sprite-sheet-alpha.webp',true),...['letter','plane','slip','stamp'].map(name=>loadImage('fx-nib-'+name,'assets/nib/ui/fx-'+name+'.webp',true))]:[]), ...(ED?[loadImage('edda','assets/edda/run/sprite-sheet-alpha.webp',true),...['stone','ripple','shell','tortoise','stomp'].map(name=>loadImage('fx-edda-'+name,'assets/edda/ui/fx-'+name+'.webp',true))]:[]), loadImage('drone', 'assets/ui/drone.png', true), loadImage('cutin', 'assets/ui/ultimate-cutin.webp', true)])).then(results => {
     images['stage-bellora']=images.stage;images.arco=images.hero;if(F)syncPlayerForm();
     ready = results.every(Boolean) && (!F || (!!window.FENR_HUMAN_MANIFEST && !!window.FENR_WOLF_MANIFEST)) && !!manifest && frames('idle').length > 0;
-    if (ready) { $('#load-state').classList.add('hidden'); announce('TRAINING READY', 1.65); }
+    if (ready) { $('#load-state').classList.add('hidden'); announce('ANTRENMAN HAZIR', 1.65); }
     else { $('#load-state').classList.add('error'); $('#load-message').textContent = 'Aset arena belum lengkap. Periksa atlas/manifest karakter, stage.webp, drone.png, dan ultimate-cutin.webp, lalu muat ulang.'; }
     window.FrontEnd?.assetsReady(ready);
   });
